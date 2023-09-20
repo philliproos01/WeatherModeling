@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<html lang ="en">
+<head>
+	<title>DOCUMENT</title>
+	<link rel="stylesheet" href="https://pyscript.net/latest/pyscript.css" />
+	<script defer src="https://pyscript.net/latest/pyscript.js"></script>
+	<py-config>
+	packages = ['matplotlib', 'pandas', 'numpy']
+	</py-config>
+</head>
+
+<body>
+<div id="graph-area"></div>
+    <py-script>
+		import matplotlib.pyplot as plt
+		import pandas as pd 
+		import numpy as np
+
+		from pyodide.http import open_url
+
+		url_content = open_url("https://raw.githubusercontent.com/philliproos01/Computational-Physics-Models/main/Proj5/ARDUINO.TXT")
+
+		df = pd.read_csv(url_content)
+		#display (df.head())
+		column1 = df['t'].values
+		column2 = df['temp'].values
+		column3 = df['hum'].values
+		column4 = df['pres'].values
+
+		t = [float(string) for string in column1]
+		temp = [float(string) for string in column2]
+		hum = [float(string) for string in column3]
+		pres = [float(string) for string in column4]
+
+
+
+		fig, ax1 = plt.subplots(figsize=(16, 16))
+		ax2 = ax1.twinx()  
+
+		x = t
+
+		ax2.plot(x, temp, color = 'blue', label = "Temperature", lw=4)
+		ax1.plot(x, hum, color = 'red', label = "Humidity", lw=4)
+		ax1.set_xlabel('Time past in minutes')
+		ax2.set_ylabel('Temperature(°C)')
+		ax1.set_ylabel('Humidity')
+		plt.title('Weather Report', fontsize = 20)
+		plt.grid()
+		plt.legend()
+
+
+		display(fig, target="graph-area", append=False)
+
+    </py-script>
+	</py-tutor>
+</body>
+
+</html>
