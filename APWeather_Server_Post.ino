@@ -14,8 +14,8 @@ Adafruit_BMP280 bmp(BMP_CS, BMP_MOSI, BMP_MISO,  BMP_SCK);
 
 #define sensorPin A5
 
-char ssid[] = "Amped_REC22A_2.4";
-char pass[] = "ce224699";
+char ssid[] = "Verizon_BNVM7C";
+char pass[] = "cry4-medal-mil";
 
 int status = WL_IDLE_STATUS;
 
@@ -87,6 +87,13 @@ void setup() {
 }
 
 void loop() {
+  //reconnect algorithim incase WiFi crashes
+  while (status != WL_CONNECTED) {
+    Serial.print("Attempting to connect to Network named: ");
+    Serial.println(ssid);
+    status = WiFi.begin(ssid, pass);
+    delay(10000);
+  }
   Serial.print(F("Temperature = "));
   Serial.print(bmp.readTemperature());
   Serial.println(" *C");
